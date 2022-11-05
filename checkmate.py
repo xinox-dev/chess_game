@@ -25,7 +25,7 @@ def mate(color: str, board: any):
         if ally_shield:
             return False
         else:
-            moves = show_available_moves.show_move(board, x, y)
+            moves = show_move(board, x, y)
             if not moves:
                 return True
             else:
@@ -48,7 +48,7 @@ def check(color: str, board: any):
         for n in range(8):
             fig = board[k][n]
             if fig in enemy_figures:
-                enemy_moves = show_available_moves.show_move(board, k, n)
+                enemy_moves = show_move(board, k, n)
                 for mov in enemy_moves:
                     mov_x, mov_y = mov
                     save_zone[mov_x][mov_y] = 'X'

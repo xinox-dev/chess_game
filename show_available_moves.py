@@ -11,10 +11,10 @@ def show_moves_pawn(player: str, x: int, y: int, board: any):  # Check move for 
                     moves.append((x, y+2))
                 # check if player have opponent
                 if  x <= 5 and board[x+1][y+1] != cfg_board.EMPTY :
-                    if board[x+1][y+1] in cfg_board.FIGURES[cfg_board.BLACKS] and board[x + 2][y + 2] == ' ':
+                    if board[x+1][y+1] in cfg_board.FIGURES[cfg_board.BLACKS] and board[x + 2][y + 2] == cfg_board.EMPTY:
                         moves.append((x+2, y+2))
                 if x >= 2 and board[x-1][y+1] != cfg_board.EMPTY:
-                    if board[x-1][y+1] in cfg_board.FIGURES[cfg_board.BLACKS] and board[x - 2][y + 2] == ' ':
+                    if board[x-1][y+1] in cfg_board.FIGURES[cfg_board.BLACKS] and board[x - 2][y + 2] == cfg_board.EMPTY:
                         moves.append((x-2, y+2))
 
     elif player == cfg_board.BLACKS:
@@ -25,10 +25,10 @@ def show_moves_pawn(player: str, x: int, y: int, board: any):  # Check move for 
                     moves.append((x, y-2))
                 # check if player have opponent
                 if x >= 2 and board[x-1][y-1] != cfg_board.EMPTY:
-                    if board[x-1][y-1] in cfg_board.FIGURES[cfg_board.WHITES] and board[x - 2][y + -2] == ' ':
+                    if board[x-1][y-1] in cfg_board.FIGURES[cfg_board.WHITES] and board[x - 2][y + -2] == cfg_board.EMPTY:
                         moves.append((x-2, y-2))
                 if x <= 5 and board[x+1][y-1] != cfg_board.EMPTY:
-                    if board[x+1][y-1] in cfg_board.FIGURES[cfg_board.WHITES] and board[x + 2][y - 2] == ' ':
+                    if board[x+1][y-1] in cfg_board.FIGURES[cfg_board.WHITES] and board[x + 2][y - 2] == cfg_board.EMPTY:
                         moves.append((x+2, y-2))
 
     return moves
@@ -40,39 +40,39 @@ def show_moves_tower(player: str, x: int, y: int, board: any):
     enemy_figures = cfg_board.ENEMY_FIGURES[player]
     # check moves to upper
     for i in range(x-1, -1, -1):
-        if board[i][y] == ' ':
+        if board[i][y] == cfg_board.EMPTY:
             moves.append((i, y))
         elif board[i][y] in enemy_figures:
             moves.append((i, y))
             break
-        elif board[i][y] != ' ':
+        elif board[i][y] != cfg_board.EMPTY:
             break
     # check moves to bottom
     for i in range(x+1, 8):
-        if board[i][y] == ' ':
+        if board[i][y] == cfg_board.EMPTY:
             moves.append((i, y))
         elif board[i][y] in enemy_figures:
             moves.append((i, y))
             break
-        elif board[i][y] != ' ':
+        elif board[i][y] != cfg_board.EMPTY:
             break
     # check moves to left
     for i in range(y-1, -1, -1):
-        if board[x][i] == ' ':
+        if board[x][i] == cfg_board.EMPTY:
             moves.append((x, i))
         elif board[x][i] in enemy_figures:
             moves.append((x, i))
             break
-        elif board[x][i] != ' ':
+        elif board[x][i] != cfg_board.EMPTY:
             break
     # check moves to right
     for i in range(y+1, 8):
-        if board[x][i] == ' ':
+        if board[x][i] == cfg_board.EMPTY:
             moves.append((x, i))
         elif board[x][i] in enemy_figures:
             moves.append((x, i))
             break
-        elif board[x][i] != ' ':
+        elif board[x][i] != cfg_board.EMPTY:
             break
     return moves
 

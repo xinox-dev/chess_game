@@ -1,64 +1,58 @@
 import pygame
 from config import game_setings as cfg_main
+from Board import Board
+from load_assets import img_figures
+from config.board import EMPTY
 
+# start settings for pygame window application
 pygame.init()
 window = pygame.display.set_mode((cfg_main.WIN_WIDTH, cfg_main.WIN_HEIGHT))
+app_running = True
+
+# init board
+board = Board()
+area = board.view_board()
 
 pos_x, pos_y = (0, 0)
+test = pygame.image.load("assets/black_king.png")
 
-app_running = True
+def draw_current_cell():
+    for i in range(8):
+        for j in range(8):
+            f_width, f_height = cfg_main.FIGURE_IMG_SIZE
+            x, y = s_x+f_width*j, s_y+f_height*i
+            if x <= pos_x <= x+f_width and y <= pos_y <= y+f_height:
+                square_color = (200, 20, 200)
+                square = pygame.rect.Rect(x, y, f_width, f_height)
+                pygame.draw.rect(window, square_color, square)
+
+def draw_figures():
+    for i in range(8):
+        for j in range(8):
+            f_width, f_height = cfg_main.FIGURE_IMG_SIZE
+            x, y = s_x + f_width * j, s_y + f_height * i
+            if area[j][i] != EMPTY:
+                window.blit(img_figures[area[j][i]], (x, y))
+
+
 while app_running:
-    window.fill((100, 130, 140))
+    pygame.time.Clock().tick(cfg_main.FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             app_running = False
         if event.type == pygame.MOUSEBUTTONUP:
             pos_x, pos_y = pygame.mouse.get_pos()
-    square_color = (20, 200, 20)
+
+    window.fill((100, 130, 140))
     s_x, s_y = 100, 100
-    for i in range(8):
-        for j in range(8):
-            a, b = s_x+80*j, s_y+80*i
-            if a <= pos_x <= a+50 and b <= pos_y <= b+50:
-                square_color = (200, 20, 200)
-            else:
-                square_color = (20, 200, 20)
-            square = pygame.rect.Rect(a, b, 50, 50)
-            pygame.draw.rect(window, square_color, square)
+    draw_current_cell()
+    draw_figures()
 
     pygame.display.update()
-#
+
 # if __name__ == "__main__":
 #     main()
 
 
 
 
-# from Board import Board
-#
-# board = Board()
-# area = board.view_board()
-#
-# while True:
-#     area = board.view_board()
-#
-#     print('  A  B  C  D  E  F  G  H')
-#     print('|--------------------------|')
-#     for i in range(8):
-#         print('| ', end=' ')
-#         for j in range(8):
-#             print(area[j][i]+' ', sep='', end=' ')
-#         print(f'| {i+1}', end='\n')
-#
-#     print('|--------------------------|')
-#
-#     s = input("Command:")
-#
-#     if s == '9':
-#         break
-#
-#     if s == '8':
-#         m = input('move:')
-#         x, y, t_x, t_y = m.split(' ')
-#         board.move(int(x), int(y), int(t_x), int(t_y))
-#
