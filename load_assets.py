@@ -5,8 +5,7 @@ from config.game_setings import FIGURE_IMG_SIZE
 
 def load_figure(figure):
     img = pygame.image.load(rf'assets/{figure}.png')
-    scale = pygame.transform.scale(img, FIGURE_IMG_SIZE)
-    print(f'{figure} load...')
+    scale = pygame.transform.scale(img, (FIGURE_IMG_SIZE, FIGURE_IMG_SIZE))
     return scale
 
 

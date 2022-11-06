@@ -1,7 +1,7 @@
 from config import board as cfg_board
-from show_available_moves import show_move
-from checkmate import check, mate
-from move_on_board import figure_movement
+from backend.show_available_moves import show_move
+from backend.checkmate import check, mate
+from backend.move_on_board import figure_movement
 
 
 class Board:
