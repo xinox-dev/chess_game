@@ -1,4 +1,4 @@
-from backend.show_available_moves import show_move
+from chesslogic.show_available_moves import show_move
 from config import board as cfg_board
 
 

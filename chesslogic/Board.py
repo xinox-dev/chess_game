@@ -1,7 +1,7 @@
 from config import board as cfg_board
-from backend.show_available_moves import show_move
-from backend.checkmate import check, mate
-from backend.move_on_board import figure_movement
+from chesslogic.show_available_moves import show_move
+from chesslogic.checkmate import check, mate
+from chesslogic.move_on_board import figure_movement
 
 
 class Board:
@@ -9,7 +9,10 @@ class Board:
         self.area = cfg_board.BOARD_SET
 
     def check_available_move(self, x: int, y: int):
-        return show_move(self.area, x, y)
+        if 0 <= x <= 7 and 0 <= y <= 7:
+            return show_move(self.area, x, y)
+        else:
+            return []
 
     def check_check(self, color: str):
         return check(color, self.area)

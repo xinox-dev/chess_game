@@ -1,5 +1,5 @@
 from config import board as cfg_board
-from backend.show_available_moves import show_move
+from chesslogic.show_available_moves import show_move
 
 
 def figure_movement(current_x: int, current_y: int, target_x: int, target_y: int, board: any):

@@ -23,3 +23,4 @@ img_figures = {
     W_KING: load_figure(W_KING),
     B_KING: load_figure(B_KING),
 }
+img_board = pygame.transform.scale(pygame.image.load('assets/board.jpg'), (705, 705))
