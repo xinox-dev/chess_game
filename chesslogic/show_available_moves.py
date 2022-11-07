@@ -10,12 +10,6 @@ def show_moves_pawn(player: str, x: int, y: int, board: any):  # Check move for 
                 if board[x][y+2] == cfg_board.EMPTY and y == 1:
                     moves.append((x, y+2))
                 # check if player have opponent
-                if  x <= 5 and board[x+1][y+1] != cfg_board.EMPTY :
-                    if board[x+1][y+1] in cfg_board.FIGURES[cfg_board.BLACKS] and board[x + 2][y + 2] == cfg_board.EMPTY:
-                        moves.append((x+2, y+2))
-                if x >= 2 and board[x-1][y+1] != cfg_board.EMPTY:
-                    if board[x-1][y+1] in cfg_board.FIGURES[cfg_board.BLACKS] and board[x - 2][y + 2] == cfg_board.EMPTY:
-                        moves.append((x-2, y+2))
 
     elif player == cfg_board.BLACKS:
         if board[x][y - 1] == cfg_board.EMPTY:
