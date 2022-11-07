@@ -40,18 +40,16 @@ class GameScreen:
             self.pos_on_board_y = -1
 
     def action(self, x, y):
-        print(self.board.selected_figure)
         self.set_press_cursor(x, y)
         if self.board.check_move(self.pos_on_board_x, self.pos_on_board_y):
             self.board.move(self.pos_on_board_x, self.pos_on_board_y)
+            self.turn = Constants.BLACK if self.turn == Constants.WHITE else Constants.WHITE
         else:
             self.set_selected_figure()
 
     def set_selected_figure(self):
         if self.pos_on_board_x >= 0 and self.pos_on_board_y >= 0:
             self.board.select_figure(self.turn, self.pos_on_board_x, self.pos_on_board_y)
-            if self.board.selected_figure:
-                self.board.selected_figure.set_possible_moves(self.board)
 
     def create_rect_selected_figure(self):
         x = self.pos_of_board_x + self.board.selected_figure.pos_x * 80
@@ -65,7 +63,7 @@ class GameScreen:
         pygame.draw.rect(window, (100, 1, 1), square)
 
     def draw_possible_moves(self, window):
-        moves = self.board.selected_figure.possible_m
+        moves = self.board.selected_figure.possible_moves(self.board.fields)
         for m in moves:
             if self.board.white_on_top:
                 pos_x = m[0]

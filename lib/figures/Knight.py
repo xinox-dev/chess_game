@@ -14,7 +14,7 @@ class Knight:
         for m in potential_move:
             x, y = m
             if 0 <= x <= 7 and 0 <= y <= 7:
-                field = board.fields[x][y]
+                field = board[x][y]
                 if field.empty:
                     moves.append((x, y))
                 else:

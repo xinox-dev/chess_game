@@ -49,7 +49,7 @@ class Board:
         if not self.white_on_top:
             pos_x = 7 - pos_x
             pos_y = 7 - pos_y
-        if self.selected_figure and (pos_x, pos_y) in self.selected_figure.possible_m:
+        if self.selected_figure and (pos_x, pos_y) in self.selected_figure.possible_moves(self.fields):
             return True
         else:
             return False
@@ -72,3 +72,5 @@ class Board:
 
         # clear selected figure
         self.selected_figure = None
+
+        #

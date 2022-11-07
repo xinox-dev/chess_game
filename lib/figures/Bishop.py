@@ -11,10 +11,10 @@ class Bishop:
         moves = []
         # check south-east
         for i in range(1, 8):
-            if pos_x + i <= 7 or pos_y + i <= 7:
-                if board.fields[pos_x + i][pos_y + i].empty:
+            if pos_x + i <= 7 and pos_y + i <= 7:
+                if board[pos_x + i][pos_y + i].empty:
                     moves.append((pos_x + i, pos_y + i))
-                elif board.fields[pos_x + i][pos_y + i].figure.color != self.color:
+                elif board[pos_x + i][pos_y + i].figure.color != self.color:
                     moves.append((pos_x + i, pos_y + i))
                     break
                 else:
@@ -23,10 +23,10 @@ class Bishop:
                 break
         # check south-west
         for i in range(1, 8):
-            if pos_x + i <= 7 or pos_y - i >= 0:
-                if board.fields[pos_x + i][pos_y - i].empty:
+            if pos_x + i <= 7 and pos_y - i >= 0:
+                if board[pos_x + i][pos_y - i].empty:
                     moves.append((pos_x + i, pos_y - i))
-                elif board.fields[pos_x + i][pos_y - i].figure.color != self.color:
+                elif board[pos_x + i][pos_y - i].figure.color != self.color:
                     moves.append((pos_x + i, pos_y - i))
                     break
                 else:
@@ -35,10 +35,10 @@ class Bishop:
                 break
         # check north-west
         for i in range(1, 8):
-            if pos_x - i >= 0 or pos_y - i >= 0:
-                if board.fields[pos_x - i][pos_y - i].empty:
+            if pos_x - i >= 0 and pos_y - i >= 0:
+                if board[pos_x - i][pos_y - i].empty:
                     moves.append((pos_x - i, pos_y - i))
-                elif board.fields[pos_x - i][pos_y - i].figure.color != self.color:
+                elif board[pos_x - i][pos_y - i].figure.color != self.color:
                     moves.append((pos_x - i, pos_y - i))
                     break
                 else:
@@ -47,10 +47,10 @@ class Bishop:
                 break
         # check north-east
         for i in range(1, 8):
-            if pos_x - i >= 0 or pos_y + i <= 7:
-                if board.fields[pos_x - i][pos_y + i].empty:
+            if pos_x - i >= 0 and pos_y + i <= 7:
+                if board[pos_x - i][pos_y + i].empty:
                     moves.append((pos_x - i, pos_y + i))
-                elif board.fields[pos_x - i][pos_y + i].figure.color != self.color:
+                elif board[pos_x - i][pos_y + i].figure.color != self.color:
                     moves.append((pos_x - i, pos_y + i))
                     break
                 else:

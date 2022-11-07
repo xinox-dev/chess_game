@@ -14,7 +14,6 @@ class Field:
         self.pos_y = pos_y
         self.figure = self.set_figure()
         self.empty = False if self.symbol else True
-        self.possible_m = None
 
     def set_empty(self):
         if self.symbol:
@@ -27,8 +26,12 @@ class Field:
         y = Constants.POS_OF_BOARD_Y + col * 80
         screen.blit(self.figure.img, (x, y))
 
-    def set_possible_moves(self, board):
-        self.possible_m = self.figure.get_possible_moves(board, self.pos_x, self.pos_y)
+    def possible_moves(self, board):
+        moves = self.figure.get_possible_moves(board, self.pos_x, self.pos_y)
+        if not moves:
+            return []
+        else:
+            return moves
 
     def set_figure(self):
         if self.symbol == 'p':
