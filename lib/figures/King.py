@@ -53,6 +53,20 @@ class King:
                 moves.append(possible_move)
         return moves
 
+    def check(self, board, pos_x, pos_y):
+        dangerous_zone = []
+        for i,row in enumerate(board):
+            for j, field in enumerate(row):
+                if not field.empty:
+                    if field.figure.color == self.color or field.symbol == 'k' or field.symbol == 'K':
+                        continue
+                    dangerous_zone += field.possible_moves(board)
+
+        if (pos_x, pos_y) in dangerous_zone:
+            return True
+        else:
+            return False
+
     def set_image(self):
         if self.color == Constants.WHITE:
             return Images.W_KING

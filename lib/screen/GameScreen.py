@@ -8,9 +8,26 @@ class GameScreen:
         self.press_cur_x, self.press_cur_y = (-1, -1)
         self.pos_of_board_x, self.pos_of_board_y = (100, 100)
         self.pos_on_board_x, self.pos_on_board_y = (-1, -1)
-        self.board = Board(Constants.BLACK)
+        self.board = Board(Constants.WHITE)
         self.background_color = (100, 100, 100)
         self.turn = Constants.WHITE
+
+    def action(self, x, y):
+        print(self.board.available_moves_on_check)
+        self.set_press_cursor(x, y)
+        if self.board.check_move(self.pos_on_board_x, self.pos_on_board_y):
+            self.board.move(self.pos_on_board_x, self.pos_on_board_y)
+            self.turn = Constants.BLACK if self.turn == Constants.WHITE else Constants.WHITE
+
+            king = self.board.find_king(self.turn)
+            if king.check_check(self.board.fields):
+                self.board.check_color = self.turn
+                self.board.set_available_moves_on_check()
+                if not self.board.available_moves_on_check:
+                    print("SZACH MAT!!!")
+
+        else:
+            self.set_selected_figure()
 
     def draw_screen(self, window):
         window.fill(self.background_color)
@@ -38,14 +55,6 @@ class GameScreen:
             self.pos_on_board_y = int(pos_on_board_y)
         else:
             self.pos_on_board_y = -1
-
-    def action(self, x, y):
-        self.set_press_cursor(x, y)
-        if self.board.check_move(self.pos_on_board_x, self.pos_on_board_y):
-            self.board.move(self.pos_on_board_x, self.pos_on_board_y)
-            self.turn = Constants.BLACK if self.turn == Constants.WHITE else Constants.WHITE
-        else:
-            self.set_selected_figure()
 
     def set_selected_figure(self):
         if self.pos_on_board_x >= 0 and self.pos_on_board_y >= 0:

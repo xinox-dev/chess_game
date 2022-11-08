@@ -13,7 +13,7 @@ class Pawn:
             if pos_y <= 6 and board[pos_x][pos_y + 1].empty:
                 moves.append((pos_x, pos_y + 1))
 
-            if pos_y == 1 and board[pos_x][pos_y + 2].empty:
+            if pos_y == 1 and board[pos_x][pos_y + 2].empty and board[pos_x][pos_y + 1].empty:
                 moves.append((pos_x, pos_y + 2))
 
             if pos_y <= 6 and pos_x <= 6 and not board[pos_x + 1][pos_y + 1].empty \
@@ -28,7 +28,7 @@ class Pawn:
             if pos_y >= 1 and board[pos_x][pos_y - 1].empty:
                 moves.append((pos_x, pos_y - 1))
 
-            if pos_y == 6 and board[pos_x][pos_y - 2].empty:
+            if pos_y == 6 and board[pos_x][pos_y - 2].empty and board[pos_x][pos_y - 1].empty:
                 moves.append((pos_x, pos_y - 2))
 
             if pos_y >= 1 and pos_x <= 6 and not board[pos_x + 1][pos_y - 1].empty \
