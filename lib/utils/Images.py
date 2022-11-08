@@ -19,4 +19,4 @@ class Images:
     B_KING = image.load(ROOT_PATH + '\\assets\\black_king.png')
 
     # Board
-    BOARD = image.load(ROOT_PATH + '\\assets\\board.jpg')
+    BOARD = image.load(ROOT_PATH + '\\assets\\board.png')

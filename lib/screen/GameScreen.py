@@ -1,5 +1,6 @@
 from lib.board.Board import Board
 from lib.utils.Constants import Constants
+from lib.utils.Images import Images
 import pygame
 
 
@@ -31,7 +32,7 @@ class GameScreen:
 
     def draw_screen(self, window):
         window.fill(self.background_color)
-
+        window.blit(Images.BOARD, (100, 100))
         if self.pos_on_board_x >= 0 and self.pos_on_board_y >= 0:
             self.draw_selected_field(window)
 
