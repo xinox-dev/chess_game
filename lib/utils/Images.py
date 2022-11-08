@@ -20,3 +20,7 @@ class Images:
 
     # Board
     BOARD = image.load(ROOT_PATH + '\\assets\\board.png')
+
+    # shadows
+    GREEN_SHADOW = image.load(ROOT_PATH + '\\assets\\green_shadow.png')
+    SELECTED_SHADOW = image.load(ROOT_PATH + '\\assets\\selected_shadow.png')

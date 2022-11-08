@@ -49,9 +49,15 @@ class Board:
                 if not self.check_color:
                     self.selected_figure = field
                 else:
+                    select_figure: None = None
                     for available_move in self.available_moves_on_check:
                         if available_move[0] == field:
-                            self.selected_figure = field
+                            select_figure = field
+                            break
+                    if not select_figure:
+                        self.selected_figure = None
+                    else:
+                        self.selected_figure = select_figure
 
     def check_move(self, pos_x, pos_y):
         if not self.white_on_top:
