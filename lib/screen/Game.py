@@ -4,12 +4,12 @@ from lib.utils.Images import Images
 import pygame
 
 
-class GameScreen:
-    def __init__(self):
+class Game:
+    def __init__(self, color):
         self.press_cur_x, self.press_cur_y = (-1, -1)
         self.pos_on_board_x, self.pos_on_board_y = (-1, -1)
-        self.board = Board(Constants.BLACK)
-        self.background_color = (100, 100, 100)
+        self.board = Board(color)
+        self.background_color = (15, 16, 37)
         self.color_of_turn = Constants.WHITE
 
     def action(self, x, y):
@@ -30,7 +30,7 @@ class GameScreen:
         else:
             self.set_selected_figure()
 
-    def draw_screen(self, window):
+    def draw(self, window):
         # background
         window.fill(self.background_color)
         # board

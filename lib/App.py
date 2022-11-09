@@ -1,23 +1,24 @@
 import pygame
-from lib.screen.GameScreen import GameScreen
-from  lib.screen.MenuScreen import MenuScreen
-
+from lib.screen.Game import Game
+from lib.screen.Menu import Menu
+from lib.utils.Constants import Constants
 
 class App:
     def __init__(self):
         self.window = pygame.display.set_mode((1200, 800))
         self.fps = pygame.time.Clock().tick
-        self.game = GameScreen()
-        self.menu = MenuScreen()
+        self.game = Game(Constants.WHITE)
+        self.menu = Menu(fun_create_game=self.create_game)
         self.app_runs = True
+        self.menu_active = True
 
     def run_app(self):
         pygame.init()
         while self.app_runs:
             self.fps(60)
             self.check_event(pygame.event.get())
-            self.menu.draw_menu(self.window)
-            # self.game.draw_screen(self.window)
+            self.game.draw(self.window)
+            self.menu.draw(self.window)
             pygame.display.update()
 
     def check_event(self, events):
@@ -26,4 +27,11 @@ class App:
                 self.app_runs = False
             if e.type == pygame.MOUSEBUTTONUP:
                 cursor_x, cursor_y = pygame.mouse.get_pos()
-                # self.game.action(cursor_x, cursor_y)
+                if not self.menu_active:
+                    self.game.action(cursor_x, cursor_y)
+                self.menu.action(cursor_x, cursor_y)
+
+    def create_game(self, color):
+        self.game = Game(color)
+        self.menu.subwindow = None
+

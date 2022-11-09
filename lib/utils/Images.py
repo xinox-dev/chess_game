@@ -28,4 +28,8 @@ class Images:
     # buttons
     BTN_DEV = image.load(ROOT_PATH + '\\assets\\btn.png')
     BTN_DEV_A = image.load(ROOT_PATH + '\\assets\\btn_a.png')
-
+    P_VS_AI = image.load(ROOT_PATH + '\\assets\\per_ai_choose.png')
+    P_VS_P = image.load(ROOT_PATH + '\\assets\\per_per_choose.png')
+    WHITE_CHOOSE = image.load(ROOT_PATH + '\\assets\\white_choose.png')
+    BLACK_CHOOSE = image.load(ROOT_PATH + '\\assets\\black_choose.png')
+    RANDOM_CHOOSE = image.load(ROOT_PATH + '\\assets\\random_choose.png')
