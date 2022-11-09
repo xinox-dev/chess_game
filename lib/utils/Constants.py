@@ -4,7 +4,8 @@ class Constants:
     SIZE_CELL_OF_BOARD = 80
     POS_OF_BOARD_X = 100
     POS_OF_BOARD_Y = 100
-
+    # TODO add king symbol
+    # TODO add colors
     # Standard board setup, left whites
     BOARD_SETUP = [
         ['w', 'p', '', '', '', '', 'P', 'W'],

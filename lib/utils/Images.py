@@ -24,3 +24,8 @@ class Images:
     # shadows
     GREEN_SHADOW = image.load(ROOT_PATH + '\\assets\\green_shadow.png')
     SELECTED_SHADOW = image.load(ROOT_PATH + '\\assets\\selected_shadow.png')
+
+    # buttons
+    BTN_DEV = image.load(ROOT_PATH + '\\assets\\btn.png')
+    BTN_DEV_A = image.load(ROOT_PATH + '\\assets\\btn_a.png')
+

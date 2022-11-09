@@ -2,6 +2,7 @@ from lib.utils.Constants import Constants
 from lib.board.Field import Field
 from copy import copy
 
+
 class Board:
     def __init__(self, color):
         self.fields = self.set_fields()
@@ -37,34 +38,52 @@ class Board:
                     field.draw_figure(screen, i, j)
 
     def select_figure(self, color, pos_x: int, pos_y: int):
+        if self.white_on_top:
+            field: Field = self.fields[pos_x][pos_y]
+        else:
+            field: Field = self.fields[7 - pos_x][7 - pos_y]
 
-            if self.white_on_top:
-                field: Field = self.fields[pos_x][pos_y]
+        if field.empty or field.figure.color != color:
+            self.selected_figure = None
+        else:
+            if not self.check_color:
+                self.selected_figure = field
             else:
-                field: Field = self.fields[7 - pos_x][7 - pos_y]
-
-            if field.empty or field.figure.color != color:
-                self.selected_figure = None
-            else:
-                if not self.check_color:
-                    self.selected_figure = field
+                select_figure = None
+                for available_move in self.available_moves_on_check:
+                    if available_move[0] == field:
+                        select_figure = field
+                        break
+                if not select_figure:
+                    self.selected_figure = None
                 else:
-                    select_figure: None = None
-                    for available_move in self.available_moves_on_check:
-                        if available_move[0] == field:
-                            select_figure = field
-                            break
-                    if not select_figure:
-                        self.selected_figure = None
-                    else:
-                        self.selected_figure = select_figure
+                    self.selected_figure = select_figure
 
     def check_move(self, pos_x, pos_y):
         if not self.white_on_top:
             pos_x = 7 - pos_x
             pos_y = 7 - pos_y
-        if self.selected_figure and (pos_x, pos_y) in self.selected_figure.possible_moves(self.fields):
-            return True
+        if self.selected_figure:
+            if not self.check_color and (pos_x, pos_y) in self.selected_figure.possible_moves(self.fields):
+                # checking if this move give check for myself
+                subboard = self.make_move_simulation(self.selected_figure, (pos_x, pos_y))
+                king = self.find_king(subboard, self.selected_figure.figure.color)
+                if not king.check_check(subboard):
+                    return True
+                else:
+                    return False
+
+            elif self.check_color:
+                moves = []
+                for available_move in self.available_moves_on_check:
+                    if available_move[0] == self.selected_figure:
+                        moves.append(available_move[1])
+                if (pos_x, pos_y) in moves:
+                    return True
+                else:
+                    return False
+            else:
+                return False
         else:
             return False
 
@@ -90,8 +109,9 @@ class Board:
         # clear check status
         self.check_color = None
 
-    def find_king(self, color):
-        for row in self.fields:
+    @ staticmethod
+    def find_king(fields, color):
+        for row in fields:
             for field in row:
                 if field.symbol == 'k' and color == Constants.WHITE:
                     return field
@@ -110,24 +130,25 @@ class Board:
                     else:
                         moves = field.possible_moves(self.fields)
                         for move in moves:
-                            subboard = [[None for _ in range(8)] for _ in range(8)]
-                            for i in range(8):
-                                for j in range(8):
-                                    subboard[i][j] = copy(self.fields[i][j])
+                            subboard = self.make_move_simulation(field, move)
 
-                            subboard[move[0]][move[1]] = field
-                            x, y = field.pos_x, field.pos_y
-                            subboard[x][y] = Field(x, y)
-
-                            # find king
-                            for subrow in subboard:
-                                for subfield in subrow:
-                                    if subfield.symbol == 'k' and subfield.figure.color == self.check_color:
-                                        king = subfield
-                                    if subfield.symbol == 'K' and subfield.figure.color == self.check_color:
-                                        king = subfield
+                            king = self.find_king(subboard, self.check_color)
 
                             if not king.check_check(subboard):
                                 available_moves_on_check.append((field, move))
 
         self.available_moves_on_check = available_moves_on_check
+
+    # give new board with simulation
+    def make_move_simulation(self, field, move):
+        subboard = [[None for _ in range(8)] for _ in range(8)]
+        for i in range(8):
+            for j in range(8):
+                subboard[i][j] = copy(self.fields[i][j])
+
+        subboard[move[0]][move[1]] = field
+        x, y = field.pos_x, field.pos_y
+        subboard[x][y] = Field(x, y)
+
+        return subboard
+

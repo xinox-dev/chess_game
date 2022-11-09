@@ -1,5 +1,6 @@
 import pygame
 from lib.screen.GameScreen import GameScreen
+from  lib.screen.MenuScreen import MenuScreen
 
 
 class App:
@@ -7,6 +8,7 @@ class App:
         self.window = pygame.display.set_mode((1200, 800))
         self.fps = pygame.time.Clock().tick
         self.game = GameScreen()
+        self.menu = MenuScreen()
         self.app_runs = True
 
     def run_app(self):
@@ -14,8 +16,8 @@ class App:
         while self.app_runs:
             self.fps(60)
             self.check_event(pygame.event.get())
-
-            self.game.draw_screen(self.window)
+            self.menu.draw_menu(self.window)
+            # self.game.draw_screen(self.window)
             pygame.display.update()
 
     def check_event(self, events):
@@ -24,4 +26,4 @@ class App:
                 self.app_runs = False
             if e.type == pygame.MOUSEBUTTONUP:
                 cursor_x, cursor_y = pygame.mouse.get_pos()
-                self.game.action(cursor_x, cursor_y)
+                # self.game.action(cursor_x, cursor_y)
