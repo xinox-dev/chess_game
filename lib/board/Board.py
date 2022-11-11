@@ -112,6 +112,7 @@ class Board:
 
         # set evaluation
         self.set_evaluation()
+        print(self.evaluation)
 
     @ staticmethod
     def find_king(fields, color):

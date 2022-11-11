@@ -8,9 +8,10 @@ class App:
         self.window = pygame.display.set_mode((1200, 800))
         self.clock = pygame.time.Clock()
         self.game = Game(Constants.FIG_WHITE)
-        self.menu = Menu(fun_create_game=self.create_game)
+        self.menu = Menu(fun_create_game=self.create_game, fun_set_bot=self.set_mode)
         self.app_runs = True
         self.menu_active = True
+        self.is_bot = False
 
     def run_app(self):
         pygame.init()
@@ -34,7 +35,7 @@ class App:
                 self.menu.action(cursor_x, cursor_y)
 
     def create_game(self, color):
-        self.game = Game(color)
+        self.game = Game(color, self.is_bot)
         self.menu.subwindow = None
         self.menu.is_on = False
 
@@ -43,3 +44,11 @@ class App:
         fps = str(int(self.clock.get_fps()))
         fps_text = pygame.font.SysFont("Arial", 18).render(fps, 1, pygame.Color("coral"))
         self.window.blit(fps_text, (10, 10))
+
+    def set_mode(self, mode):
+        if mode == 'pvp':
+            self.is_bot = False
+        else:
+            self.is_bot = True
+
+        self.menu.choose_color()
