@@ -24,7 +24,7 @@ class Knight:
         return moves
 
     def set_image(self):
-        if self.color == Constants.WHITE:
+        if self.color == Constants.FIG_WHITE:
             return Images.W_KNIGHT
         else:
             return Images.B_KNIGHT

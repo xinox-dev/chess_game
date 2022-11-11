@@ -9,8 +9,8 @@ class Game:
         self.press_cur_x, self.press_cur_y = (-1, -1)
         self.pos_on_board_x, self.pos_on_board_y = (-1, -1)
         self.board = Board(color)
-        self.background_color = (15, 16, 37)
-        self.color_of_turn = Constants.WHITE
+        self.background_color = (58, 48, 66)
+        self.color_of_turn = Constants.FIG_WHITE
 
     def action(self, x, y):
         # set last position press cursor
@@ -18,7 +18,7 @@ class Game:
 
         if self.board.check_move(self.pos_on_board_x, self.pos_on_board_y):
             self.board.move(self.pos_on_board_x, self.pos_on_board_y)
-            self.color_of_turn = Constants.BLACK if self.color_of_turn == Constants.WHITE else Constants.WHITE
+            self.color_of_turn = Constants.FIG_BLACK if self.color_of_turn == Constants.FIG_WHITE else Constants.FIG_WHITE
             # checking if there is a check or checkmate
             king = self.board.find_king(self.board.fields, self.color_of_turn)
             if king.check_check(self.board.fields):
@@ -34,7 +34,7 @@ class Game:
         # background
         window.fill(self.background_color)
         # board
-        window.blit(Images.BOARD, (Constants.POS_OF_BOARD_X, Constants.POS_OF_BOARD_Y))
+        window.blit(Images.BOARD_F, (Constants.POS_OF_BOARD_X-40, Constants.POS_OF_BOARD_Y-40))
         # figures
         self.board.draw_fields(window)
         # selected field
@@ -43,6 +43,8 @@ class Game:
         # available moves
         if self.board.selected_figure:
             self.draw_possible_moves(window)
+        # draw color_of_turn
+        self.draw_turn_color(window)
 
     def set_press_cursor(self, x, y):
         self.press_cur_x, self.press_cur_y = x, y
@@ -86,3 +88,15 @@ class Game:
             x = Constants.POS_OF_BOARD_X + pos_x * Constants.SIZE_CELL_OF_BOARD
             y = Constants.POS_OF_BOARD_Y + pos_y * Constants.SIZE_CELL_OF_BOARD
             window.blit(Images.GREEN_SHADOW, (x, y))
+
+    def draw_turn_color(self, window):
+        x = Constants.POS_OF_BOARD_X + Constants.SIZE_CELL_OF_BOARD*8 + 100
+        y = Constants.POS_OF_BOARD_Y + Constants.SIZE_CELL_OF_BOARD*8/2
+
+        if self.color_of_turn == Constants.FIG_WHITE:
+            pygame.draw.circle(window, Constants.BLACK, (x, y), 32)
+            pygame.draw.circle(window, Constants.WHITE, (x, y), 30)
+        else:
+            pygame.draw.circle(window, Constants.WHITE, (x, y), 31)
+            pygame.draw.circle(window, Constants.BLACK, (x, y), 30)
+

@@ -97,7 +97,7 @@ class Queen:
         return moves
 
     def set_image(self):
-        if self.color == Constants.WHITE:
+        if self.color == Constants.FIG_WHITE:
             return Images.W_QUEEN
         else:
             return Images.B_QUEEN

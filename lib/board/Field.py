@@ -42,29 +42,29 @@ class Field:
 
     def set_figure(self):
         if self.symbol == 'p':
-            return Pawn(Constants.WHITE)
+            return Pawn(Constants.FIG_WHITE)
         elif self.symbol == 'P':
-            return Pawn(Constants.BLACK)
+            return Pawn(Constants.FIG_BLACK)
         elif self.symbol == 'w':
-            return Rook(Constants.WHITE)
+            return Rook(Constants.FIG_WHITE)
         elif self.symbol == 'W':
-            return Rook(Constants.BLACK)
+            return Rook(Constants.FIG_BLACK)
         elif self.symbol == 's':
-            return Knight(Constants.WHITE)
+            return Knight(Constants.FIG_WHITE)
         elif self.symbol == 'S':
-            return Knight(Constants.BLACK)
+            return Knight(Constants.FIG_BLACK)
         elif self.symbol == 'g':
-            return Bishop(Constants.WHITE)
+            return Bishop(Constants.FIG_WHITE)
         elif self.symbol == 'G':
-            return Bishop(Constants.BLACK)
+            return Bishop(Constants.FIG_BLACK)
         elif self.symbol == 'h':
-            return Queen(Constants.WHITE)
+            return Queen(Constants.FIG_WHITE)
         elif self.symbol == 'H':
-            return Queen(Constants.BLACK)
+            return Queen(Constants.FIG_BLACK)
         elif self.symbol == 'k':
-            return King(Constants.WHITE)
+            return King(Constants.FIG_WHITE)
         elif self.symbol == 'K':
-            return King(Constants.BLACK)
+            return King(Constants.FIG_BLACK)
 
 
 

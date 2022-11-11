@@ -60,7 +60,7 @@ class Bishop:
         return moves
 
     def set_image(self):
-        if self.color == Constants.WHITE:
+        if self.color == Constants.FIG_WHITE:
             return Images.W_BISHOP
         else:
             return Images.B_BISHOP

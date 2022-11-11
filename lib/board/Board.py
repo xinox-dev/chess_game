@@ -8,10 +8,11 @@ class Board:
         self.fields = self.set_fields()
         self.pos_board_x = 100
         self.pos_board_y = 100
-        self.white_on_top = False if color == Constants.WHITE else True
+        self.white_on_top = False if color == Constants.FIG_WHITE else True
         self.selected_figure = None
         self.check_color = None
         self.available_moves_on_check = []
+        self.evaluation = 0
 
     @staticmethod
     def set_fields():
@@ -109,13 +110,16 @@ class Board:
         # clear check status
         self.check_color = None
 
+        # set evaluation
+        self.set_evaluation()
+
     @ staticmethod
     def find_king(fields, color):
         for row in fields:
             for field in row:
-                if field.symbol == 'k' and color == Constants.WHITE:
+                if field.symbol == 'k' and color == Constants.FIG_WHITE:
                     return field
-                if field.symbol == 'K' and color == Constants.BLACK:
+                if field.symbol == 'K' and color == Constants.FIG_BLACK:
                     return field
 
     def set_available_moves_on_check(self):
@@ -152,3 +156,21 @@ class Board:
 
         return subboard
 
+    def set_evaluation(self):
+        evaluation = 0
+        for row in self.fields:
+            for field in row:
+                if not field.empty:
+                    symbol = field.symbol
+                    color = field.figure.color
+                    x, y = field.pos_x, field.pos_y
+                    if color == Constants.FIG_WHITE:
+                        e_fig = Constants.EVALUATION_FIG[symbol]
+                        e = e_fig['value']
+                        e_pos = e_fig['evalu'][x][y]
+                    else:
+                        e_fig = Constants.EVALUATION_FIG[symbol.lower()]
+                        e = e_fig['value'] * -1
+                        e_pos = [ar[::-1] for ar in e_fig['evalu'][::-1]][x][y] * -1
+                    evaluation += e + e_pos
+        self.evaluation = evaluation

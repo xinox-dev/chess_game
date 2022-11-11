@@ -1,5 +1,6 @@
 import pygame
 from lib.utils.Images import Images
+from lib.utils.Constants import Constants
 
 
 class Button:
@@ -16,8 +17,8 @@ class Button:
     def draw(self, window):
         window.blit(self.img, (self.pos_x, self.pos_y))
         if self.text:
-            f = pygame.font.SysFont(None, 45)
-            text = f.render(self.name, True, (255, 255, 255))
+            font = pygame.font.SysFont(None, 45)
+            text = font.render(self.name, True, Constants.GREY_10)
             window.blit(text, (self.pos_x+self.width/2-text.get_width()/2, self.pos_y+self.height/2-text.get_height()/2))
         # TODO add font to utils
 

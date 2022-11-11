@@ -32,10 +32,16 @@ class Menu:
         self.buttons = self.create_menu_buttons()
 
     def draw(self, window):
-        # window.fill(self.background)
+        # draw transparently bg
+        if self.is_on:
+            s = pygame.Surface((1200, 800))
+            s.set_alpha(200)
+            s.fill(Constants.BLACK)
+            window.blit(s, (0, 0))
+        # draw main buttons
         for btn in self.buttons:
             btn.draw(window)
-
+        # draw window with sub menu
         if self.subwindow:
             self.subwindow.draw(window)
 
@@ -53,12 +59,14 @@ class Menu:
             self.subwindow.action(cur_x, cur_y)
 
     def newgame(self):
-        random_color = random.choice([Constants.WHITE, Constants.BLACK])
-        btn_choose_white = Button(-1, -1, self.create_game, img=Images.WHITE_CHOOSE, name=Constants.WHITE, text=False)
-        btn_choose_black = Button(-1, -1, self.create_game, img=Images.BLACK_CHOOSE, name=Constants.BLACK, text=False)
-        btn_choose_random = Button(-1, -1, self.create_game, img=Images.RANDOM_CHOOSE, name=random_color, text=False)
+        self.is_on = True
+        random_color = random.choice([Constants.FIG_WHITE, Constants.FIG_BLACK])
+        btn_white = Button(-1, -1, self.create_game, img=Images.WHITE_CHOOSE, name=Constants.FIG_WHITE, text=False)
+        btn_black = Button(-1, -1, self.create_game, img=Images.BLACK_CHOOSE, name=Constants.FIG_BLACK, text=False)
+        btn_random = Button(-1, -1, self.create_game, img=Images.RANDOM_CHOOSE, name=random_color, text=False)
+        buttons = [btn_white, btn_black, btn_random]
 
-        subwin = SubWindow('Choose color.', buttons=[btn_choose_white, btn_choose_black, btn_choose_random])
+        subwin = SubWindow(close_functon=self.close_subwindow, title='Take color', buttons=buttons)
         self.subwindow = subwin
 
     def about(self):
@@ -66,8 +74,10 @@ class Menu:
         print('about')
 
     def exit(self):
-        # TODO
-        print('Take scissors and cut cable of computer :) It work, I promise.')
+        self.is_on = True
+        desc = 'Take scissors and cut cable of computer :)'
+        subwin = SubWindow(close_functon=self.close_subwindow, title='Are you sure?', desc=desc)
+        self.subwindow = subwin
 
     def set_cursor(self, cur_x, cur_y):
         self.press_cur_x = cur_x
@@ -80,3 +90,6 @@ class Menu:
                 btn.on_click = True
                 btn.use()
 
+    def close_subwindow(self):
+        self.subwindow = None
+        self.is_on = False

@@ -68,7 +68,7 @@ class King:
             return False
 
     def set_image(self):
-        if self.color == Constants.WHITE:
+        if self.color == Constants.FIG_WHITE:
             return Images.W_KING
         else:
             return Images.B_KING

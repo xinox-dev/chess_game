@@ -20,6 +20,7 @@ class Images:
 
     # Board
     BOARD = image.load(ROOT_PATH + '\\assets\\board.png')
+    BOARD_F = image.load(ROOT_PATH + '\\assets\\board_full.png')
 
     # shadows
     GREEN_SHADOW = image.load(ROOT_PATH + '\\assets\\green_shadow.png')
@@ -33,3 +34,7 @@ class Images:
     WHITE_CHOOSE = image.load(ROOT_PATH + '\\assets\\white_choose.png')
     BLACK_CHOOSE = image.load(ROOT_PATH + '\\assets\\black_choose.png')
     RANDOM_CHOOSE = image.load(ROOT_PATH + '\\assets\\random_choose.png')
+
+    # others
+    SUBWIN_BG = image.load(ROOT_PATH + '\\assets\\subwin.png')
+    CLOSE = image.load(ROOT_PATH + '\\assets\\close.png')
