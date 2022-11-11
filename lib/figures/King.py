@@ -67,6 +67,19 @@ class King:
         else:
             return False
 
+    def check_pat(self, board, pos_x, pos_y):
+        if not self.get_possible_moves(board, pos_x, pos_y):
+            is_pat = True
+            for i, row in enumerate(board):
+                for j, field in enumerate(row):
+                    if not field.empty and field.figure.color == self.color:
+                        if field.possible_moves(board):
+                            is_pat = False
+
+            return is_pat
+        else:
+            return False
+
     def set_image(self):
         if self.color == Constants.FIG_WHITE:
             return Images.W_KING

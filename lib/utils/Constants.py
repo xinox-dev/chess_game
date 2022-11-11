@@ -5,7 +5,6 @@ class Constants:
     WHITE = (255, 255, 255)
     CYAN = (64, 224, 208)
     # TODO add king symbol
-    # TODO add colors
 
     # Standard board setup, left whites
     SIZE_CELL_OF_BOARD = 80
@@ -14,6 +13,17 @@ class Constants:
     FIG_WHITE: str = 'White'
     FIG_BLACK: str = 'Black'
     BOARD_SETUP = [
+        ['', '', '', '', '', 'h', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['k', '', '', '', '', '', '', ''],
+        ['h', '', '', '', '', '', '', 'H'],
+        ['', '', '', '', '', '', '', ''],
+        ['h', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', 'K']
+    ]
+
+    BOARD_SETUP_ = [
         ['w', 'p', '', '', '', '', 'P', 'W'],
         ['s', 'p', '', '', '', '', 'P', 'S'],
         ['g', 'p', '', '', '', '', 'P', 'G'],
@@ -23,7 +33,6 @@ class Constants:
         ['s', 'p', '', '', '', '', 'P', 'S'],
         ['w', 'p', '', '', '', '', 'P', 'W']
     ]
-
     # THANKS FOR https://www.freecodecamp.org/news/simple-chess-ai-step-by-step-1d55a9266977/
     E_PAWN = [
         [0.0, 0.5, 0.5, 0.0, 0.5, 1.0, 5.0, 0.0],

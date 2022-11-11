@@ -1,12 +1,13 @@
 from lib.board.Board import Board
 from lib.utils.Constants import Constants
 from lib.utils.Images import Images
+from lib.screen.SubWindow import SubWindow
 from AI.Bot import Bot
 import pygame
 
 
 class Game:
-    def __init__(self, color, bot=False):
+    def __init__(self, color, menu,  bot=False):
         self.press_cur_x, self.press_cur_y = (-1, -1)
         self.pos_on_board_x, self.pos_on_board_y = (-1, -1)
         self.p1_color = color
@@ -14,14 +15,17 @@ class Game:
         self.background_color = (58, 48, 66)
         self.color_of_turn = Constants.FIG_WHITE
         self.bot = self.set_bot(bot)
+        self.checkmate = None
         self.first_bot_move()
+        self.menu = menu
 
     def action(self, x, y):
         # set last position press cursor
         self.set_press_cursor(x, y)
 
         if self.board.check_move(self.pos_on_board_x, self.pos_on_board_y):
-            self.move_on_board()
+            if not self.checkmate:
+                self.move_on_board()
 
         else:
             self.set_selected_figure()
@@ -108,16 +112,26 @@ class Game:
         self.color_of_turn = Constants.FIG_BLACK if self.color_of_turn == Constants.FIG_WHITE else Constants.FIG_WHITE
         # checking if there is a check or checkmate
         king = self.board.find_king(self.board.fields, self.color_of_turn)
+        if king.check_pat(self.board.fields):
+            self.checkmate = True
+            title = f'Draw ..'
+            desc = 'PAT xD'
+            self.menu.endgame(title, desc)
         if king.check_check(self.board.fields):
             self.board.check_color = self.color_of_turn
             self.board.set_available_moves_on_check()
             if not self.board.available_moves_on_check:
-                print("CHECK MATE!!!")
-
-        if self.bot and self.bot.color == self.color_of_turn:
-            self.bot_move()
+                color_win = Constants.FIG_BLACK if self.color_of_turn == Constants.FIG_WHITE else Constants.FIG_WHITE
+                self.checkmate = True
+                title = f"{color_win.upper()}'S WIN !!!"
+                desc = 'Check Mate'
+                self.menu.endgame(title, desc)
+        if not self.checkmate:
+            if self.bot and self.bot.color == self.color_of_turn:
+                self.bot_move()
 
     def bot_move(self):
+        print(self.bot.get_move(self.board))
         pos_fig, move = self.bot.get_move(self.board)
         p_x, p_y = pos_fig
         x, y = move

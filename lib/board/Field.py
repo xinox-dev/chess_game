@@ -40,6 +40,13 @@ class Field:
             print(f"Error, {self.symbol}, can't have check")
             return False
 
+    def check_pat(self, board):
+        if self.symbol == "k" or self.symbol == 'K':
+            return self.figure.check_pat(board, self.pos_x, self.pos_y)
+        else:
+            print(f"Error, {self.symbol}, can't have check")
+            return False
+
     def set_figure(self):
         if self.symbol == 'p':
             return Pawn(Constants.FIG_WHITE)

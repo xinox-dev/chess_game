@@ -104,3 +104,8 @@ class Menu:
         buttons = [btn_p_vs_p, btn_p_vs_ai]
         subwin = SubWindow(close_functon=self.close_subwindow, title='Take mode', buttons=buttons)
         self.subwindow = subwin
+
+    def endgame(self, title, desc):
+        self.is_on = True
+        subwin = SubWindow(close_functon=self.close_subwindow, title=title, desc=desc)
+        self.subwindow = subwin
