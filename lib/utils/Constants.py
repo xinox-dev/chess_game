@@ -4,23 +4,22 @@ class Constants:
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     CYAN = (64, 224, 208)
-    # TODO add king symbol
 
-    # Standard board setup, left whites
+    # Standard board setup
     SIZE_CELL_OF_BOARD = 80
     POS_OF_BOARD_X = 100
     POS_OF_BOARD_Y = 100
     FIG_WHITE: str = 'White'
     FIG_BLACK: str = 'Black'
-    BOARD_SETUP = [
-        ['k', 'w', '', '', '', '', 'p', ''],
-        ['w', 'w', '', '', '', '', 'p', ''],
-        ['', 'P', '', '', '', '', 'p', ''],
-        ['', 'P', '', '', '', '', 'p', ''],
-        ['', 'P', '', '', '', '', 'p', ''],
-        ['', 'P', '', '', '', '', 'p', ''],
-        ['', 'P', '', '', '', '', 'W', 'W'],
-        ['', 'P', '', '', '', '', 'W', 'K']
+    BOARD_SETUP_ = [
+        ['', '', '', '', '', '', '', 'W'],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['k', '', '', '', '', '', '', 'K'],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['w', '', '', '', '', '', '', '']
     ]
 
     BOARD_SETUP_ = [
@@ -33,6 +32,9 @@ class Constants:
         ['s', 'p', '', '', '', '', 'P', 'S'],
         ['w', 'p', '', '', '', '', 'P', 'W']
     ]
+
+    BOARD_SETUP = 'wp0000PW/sp0000PS/gp0000PG/kp0000PK/hp0000PH/gp0000PG/sp0000PS/wp0000PW'
+
     # THANKS FOR https://www.freecodecamp.org/news/simple-chess-ai-step-by-step-1d55a9266977/
     E_PAWN = [
         [0.0, 0.5, 0.5, 0.0, 0.5, 1.0, 5.0, 0.0],

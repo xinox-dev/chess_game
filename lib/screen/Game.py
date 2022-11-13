@@ -1,8 +1,7 @@
 from lib.board.Board import Board
 from lib.utils.Constants import Constants
 from lib.utils.Images import Images
-from lib.screen.SubWindow import SubWindow
-from AI.Bot import Bot
+from lib.bot.Bot import Bot
 import pygame
 
 
@@ -108,10 +107,7 @@ class Game:
             return None
 
     def move_on_board(self):
-        if self.checking_castle():
-            self.board.castle(self.pos_on_board_x, self.pos_on_board_y)
-        else:
-            self.board.move(self.pos_on_board_x, self.pos_on_board_y)
+        self.board.move(self.pos_on_board_x, self.pos_on_board_y)
         self.color_of_turn = Constants.FIG_BLACK if self.color_of_turn == Constants.FIG_WHITE else Constants.FIG_WHITE
         # checking if there is a check or checkmate
         king = self.board.find_king(self.board.fields, self.color_of_turn)
@@ -156,13 +152,3 @@ class Game:
     def first_bot_move(self):
         if self.bot and self.bot.color == self.color_of_turn:
             self.bot_move()
-
-    def checking_castle(self):
-        if (self.pos_on_board_x, self.pos_on_board_y) in [(0, 0), (7, 0), (0, 7), (7, 7)]:
-            if self.board.selected_figure.symbol == 'k' and not self.board.kings_already_move[Constants.FIG_WHITE]:
-                return True
-
-            if self.board.selected_figure.symbol == 'K' and not self.board.kings_already_move[Constants.FIG_BLACK]:
-                return True
-
-        return False

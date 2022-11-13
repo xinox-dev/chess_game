@@ -16,6 +16,10 @@ class Bot:
 
     def get_move(self, board):
         self.orginal_f = copy(board.fields)
+        x = copy(board)
+        x.fields[0][0] = Field(0, 0)
+        print(id(board.fields[0][0]))
+        print(id(x.fields[0][0]))
         min = -999
         move = None
         fig_pos = None
@@ -33,7 +37,6 @@ class Bot:
                                     fig_pos = (field.pos_x, field.pos_y)
                                     move = m
         else:
-            print(board.available_moves_on_check)
             for moves in board.available_moves_on_check:
                 fie, mov = moves
                 subboard = self.make_move_simulation(fie, mov)

@@ -5,7 +5,7 @@ from copy import copy
 
 class Board:
     def __init__(self, color):
-        self.fields = self.set_fields()
+        self.fields = self.load_fields()
         self.pos_board_x = 100
         self.pos_board_y = 100
         self.white_on_top = False if color == Constants.FIG_WHITE else True
@@ -19,17 +19,31 @@ class Board:
         }
 
     @staticmethod
-    def set_fields():
-        board = [[] for _ in range(8)]
-        for pos_x, row in enumerate(Constants.BOARD_SETUP):
-            for pos_y, symbol in enumerate(row):
-                if symbol != '':
-                    field = Field(pos_x, pos_y, symbol)
-                else:
-                    field = Field(pos_x, pos_y)
+    def load_fields():
+        fields = [[] for _ in range(8)]
 
-                board[pos_x].append(field)
-        return board
+        for i, (row_f, row_s) in enumerate(zip(fields, Constants.BOARD_SETUP.split('/'))):
+
+            for j, symbol in enumerate([*row_s]):
+                if symbol != '0':
+                    field = Field(i, j, symbol)
+                else:
+                    field = Field(i, j)
+
+                fields[i].append(field)
+        return fields
+
+    def save_fields(self):
+        save = ''
+        for row in self.fields:
+            for field in row:
+                if field.empty:
+                    save += '0'
+                else:
+                    save += field.symbol
+            save += '/'
+
+        return save[:-1]
 
     def draw_fields(self, screen):
         if self.white_on_top:
@@ -93,35 +107,41 @@ class Board:
             return False
 
     def move(self, target_x, target_y):
+        # switch x, y if board is reserved
         if not self.white_on_top:
             target_x = 7 - target_x
             target_y = 7 - target_y
-        old_x: int = self.selected_figure.pos_x
-        old_y: int = self.selected_figure.pos_y
-        clear_field = Field(old_x, old_y)
 
-        # move figure to new position
-        self.selected_figure.pos_x = target_x
-        self.selected_figure.pos_y = target_y
-        self.fields[target_x][target_y] = self.selected_figure
+        if self.checking_castle(target_x, target_y):
+            self.castle(target_x, target_y)
 
-        # clear old figure position
-        self.fields[old_x][old_y] = clear_field
+        else:
+            old_x: int = self.selected_figure.pos_x
+            old_y: int = self.selected_figure.pos_y
+            clear_field = Field(old_x, old_y)
 
-        # clear selected figure
-        self.selected_figure = None
+            # move figure to new position
+            self.selected_figure.pos_x = target_x
+            self.selected_figure.pos_y = target_y
+            self.fields[target_x][target_y] = self.selected_figure
 
-        # clear check status
-        self.check_color = None
+            # clear old figure position
+            self.fields[old_x][old_y] = clear_field
 
-        # check and promotion pawns
-        self.promotion_pawns()
+            # clear selected figure
+            self.selected_figure = None
 
-        # set evaluation
-        self.set_evaluation()
+            # clear check status
+            self.check_color = None
 
-        # check if king move of start position
-        self.set_king_already_move()
+            # check and promotion pawns
+            self.promotion_pawns()
+
+            # set evaluation
+            self.set_evaluation()
+
+            # check if king move of start position
+            self.set_king_already_move()
 
     def set_available_moves_on_check(self):
         available_moves_on_check = []
@@ -255,3 +275,13 @@ class Board:
         for i, row in enumerate(self.fields):
             if row[7].symbol == 'p':
                 row[7] = Field(i, 7, 'h')
+
+    def checking_castle(self, target_x, target_y):
+        if (target_x, target_y) in [(0, 0), (7, 0), (0, 7), (7, 7)]:
+            if self.selected_figure.symbol == 'k' and not self.kings_already_move[Constants.FIG_WHITE]:
+                return True
+
+            if self.selected_figure.symbol == 'K' and not self.kings_already_move[Constants.FIG_BLACK]:
+                return True
+
+        return False
