@@ -73,5 +73,8 @@ class Field:
         elif self.symbol == 'K':
             return King(Constants.FIG_BLACK)
 
+    def set_first_move(self):
+        self.figure.first_move = True
+
 
 

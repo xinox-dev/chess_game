@@ -13,6 +13,10 @@ class Board:
         self.check_color = None
         self.available_moves_on_check = []
         self.evaluation = 0
+        self.kings_already_move = {
+            Constants.FIG_WHITE: False,
+            Constants.FIG_BLACK: False,
+        }
 
     @staticmethod
     def set_fields():
@@ -113,14 +117,8 @@ class Board:
         # set evaluation
         self.set_evaluation()
 
-    @ staticmethod
-    def find_king(fields, color):
-        for row in fields:
-            for field in row:
-                if field.symbol == 'k' and color == Constants.FIG_WHITE:
-                    return field
-                if field.symbol == 'K' and color == Constants.FIG_BLACK:
-                    return field
+        # check if king move of start position
+        self.set_king_already_move()
 
     def set_available_moves_on_check(self):
         available_moves_on_check = []
@@ -174,3 +172,76 @@ class Board:
                         e_pos = [ar[::-1] for ar in e_fig['evalu'][::-1]][x][y] * -1
                     evaluation += e + e_pos
         self.evaluation = evaluation
+
+    def castle(self, target_x, target_y):
+        print('castle')
+        if not self.white_on_top:
+            target_x = 7 - target_x
+            target_y = 7 - target_y
+
+        castle_setups = {
+            'white-short': [(0, 0), (1, 0), (2, 0), (3, 0)],
+            'white-long': [(7, 0), (6, 0), (5, 0), (3, 0)],
+            'black-short': [(0, 7), (1, 7), (2, 7), (3, 7)],
+            'black-long': [(7, 7), (6, 7), (5, 7), (3, 7)],
+        }
+        setup = []
+
+        if (target_x, target_y) == (0, 0):
+            setup = castle_setups['white-short']
+
+        elif (target_x, target_y) == (7, 0):
+            print('white_long')
+            setup = castle_setups['white-long']
+
+        elif (target_x, target_y) == (0, 7):
+            setup = castle_setups['black-short']
+
+        elif (target_x, target_y) == (7, 7):
+            setup = castle_setups['black-long']
+
+        old_r_x, old_r_y = setup[0]
+        new_k_x, new_k_y = setup[1]
+        new_r_x, new_r_y = setup[2]
+        old_k_x, old_k_y = setup[3]
+
+        old_rook = self.fields[old_r_x][old_r_y]
+        old_king = self.fields[old_k_x][old_k_y]
+        # move king to new position
+        self.fields[new_k_x][new_k_y] = old_king
+        self.fields[new_k_x][new_k_y].pos_x = new_k_x
+        self.fields[new_k_x][new_k_y].pos_y = new_k_y
+        # move rook to new position
+        self.fields[new_r_x][new_r_y] = old_rook
+        self.fields[new_r_x][new_r_y].pos_x = new_r_x
+        self.fields[new_r_x][new_r_y].pos_y = new_r_y
+        # clear old fields
+        self.fields[old_r_x][old_r_y] = Field(old_r_x, old_r_y)
+        self.fields[old_k_x][old_k_y] = Field(old_k_x, old_k_y)
+        # clear selected figure
+        self.selected_figure = None
+        # set evaluation
+        self.set_evaluation()
+        # king can use one castle
+        self.set_king_already_move()
+
+    def set_king_already_move(self):
+        if self.fields[3][0].empty:
+            self.kings_already_move[Constants.FIG_WHITE] = True
+            king = self.find_king(self.fields, Constants.FIG_WHITE)
+            print('white king move')
+            king.set_first_move()
+
+        if self.fields[3][7].empty:
+            self.kings_already_move[Constants.FIG_BLACK] = True
+            king = self.find_king(self.fields, Constants.FIG_BLACK)
+            king.set_first_move()
+
+    @ staticmethod
+    def find_king(fields, color):
+        for row in fields:
+            for field in row:
+                if field.symbol == 'k' and color == Constants.FIG_WHITE:
+                    return field
+                if field.symbol == 'K' and color == Constants.FIG_BLACK:
+                    return field

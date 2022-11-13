@@ -7,6 +7,7 @@ class King:
     def __init__(self, color):
         self.color = color
         self.img = self.set_image()
+        self.first_move = False
 
     def get_possible_moves(self, board, pos_x, pos_y):
         moves = []
@@ -37,6 +38,7 @@ class King:
                     for j, field in enumerate(row):
                         if field.empty or field.figure.color == self.color:
                             continue
+
                         # king does not touch order king
                         if field.symbol == 'k' or field.symbol == 'K':
                             dangerous_zone += [(field.pos_x, field.pos_y - 1), (field.pos_x + 1, field.pos_y - 1),
@@ -51,6 +53,29 @@ class King:
                     continue
 
                 moves.append(possible_move)
+
+        # check possible castle (rotation with rook)
+        if not self.first_move:
+            if (pos_x, pos_y) == (3, 0):
+                # white short castle
+                if not board[0][0].empty and board[0][0].symbol == 'w' and board[1][0].empty and board[2][0].empty:
+                    moves.append((0, 0))
+                # white long castle
+                if not board[7][0].empty and board[7][0].symbol == 'w' and board[6][0].empty \
+                        and board[5][0].empty and board[4][0].empty:
+                    moves.append((7, 0))
+
+            if (pos_x, pos_y) == (3, 7):
+                # black short castle
+                if not board[0][7].empty and board[0][7].symbol == 'W' and board[1][7].empty and board[2][7].empty:
+                    moves.append((0, 7))
+                # black long castle
+                if not board[7][7].empty and board[7][7].symbol == 'W' and board[6][7].empty \
+                        and board[5][7].empty and board[4][7].empty:
+                    moves.append((7, 7))
+
+
+
         return moves
 
     def check(self, board, pos_x, pos_y):
@@ -85,3 +110,4 @@ class King:
             return Images.W_KING
         else:
             return Images.B_KING
+

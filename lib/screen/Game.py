@@ -108,15 +108,20 @@ class Game:
             return None
 
     def move_on_board(self):
-        self.board.move(self.pos_on_board_x, self.pos_on_board_y)
+        if self.checking_castle():
+            self.board.castle(self.pos_on_board_x, self.pos_on_board_y)
+        else:
+            self.board.move(self.pos_on_board_x, self.pos_on_board_y)
         self.color_of_turn = Constants.FIG_BLACK if self.color_of_turn == Constants.FIG_WHITE else Constants.FIG_WHITE
         # checking if there is a check or checkmate
         king = self.board.find_king(self.board.fields, self.color_of_turn)
+
         if king.check_pat(self.board.fields):
             self.checkmate = True
             title = f'Draw ..'
             desc = 'PAT xD'
             self.menu.endgame(title, desc)
+
         if king.check_check(self.board.fields):
             self.board.check_color = self.color_of_turn
             self.board.set_available_moves_on_check()
@@ -152,3 +157,13 @@ class Game:
     def first_bot_move(self):
         if self.bot and self.bot.color == self.color_of_turn:
             self.bot_move()
+
+    def checking_castle(self):
+        if (self.pos_on_board_x, self.pos_on_board_y) in [(0, 0), (7, 0), (0, 7), (7, 7)]:
+            if self.board.selected_figure.symbol == 'k' and not self.board.kings_already_move[Constants.FIG_WHITE]:
+                return True
+
+            if self.board.selected_figure.symbol == 'K' and not self.board.kings_already_move[Constants.FIG_BLACK]:
+                return True
+
+        return False
