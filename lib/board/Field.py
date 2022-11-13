@@ -75,6 +75,3 @@ class Field:
 
     def set_first_move(self):
         self.figure.first_move = True
-
-
-

@@ -74,8 +74,6 @@ class King:
                         and board[5][7].empty and board[4][7].empty:
                     moves.append((7, 7))
 
-
-
         return moves
 
     def check(self, board, pos_x, pos_y):
@@ -110,4 +108,3 @@ class King:
             return Images.W_KING
         else:
             return Images.B_KING
-

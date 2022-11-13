@@ -114,6 +114,9 @@ class Board:
         # clear check status
         self.check_color = None
 
+        # check and promotion pawns
+        self.promotion_pawns()
+
         # set evaluation
         self.set_evaluation()
 
@@ -174,7 +177,6 @@ class Board:
         self.evaluation = evaluation
 
     def castle(self, target_x, target_y):
-        print('castle')
         if not self.white_on_top:
             target_x = 7 - target_x
             target_y = 7 - target_y
@@ -191,7 +193,6 @@ class Board:
             setup = castle_setups['white-short']
 
         elif (target_x, target_y) == (7, 0):
-            print('white_long')
             setup = castle_setups['white-long']
 
         elif (target_x, target_y) == (0, 7):
@@ -220,6 +221,8 @@ class Board:
         self.fields[old_k_x][old_k_y] = Field(old_k_x, old_k_y)
         # clear selected figure
         self.selected_figure = None
+        # clear check status
+        self.check_color = None
         # set evaluation
         self.set_evaluation()
         # king can use one castle
@@ -229,7 +232,6 @@ class Board:
         if self.fields[3][0].empty:
             self.kings_already_move[Constants.FIG_WHITE] = True
             king = self.find_king(self.fields, Constants.FIG_WHITE)
-            print('white king move')
             king.set_first_move()
 
         if self.fields[3][7].empty:
@@ -245,3 +247,11 @@ class Board:
                     return field
                 if field.symbol == 'K' and color == Constants.FIG_BLACK:
                     return field
+
+    def promotion_pawns(self):
+        for i, row in enumerate(self.fields):
+            if row[0].symbol == 'P':
+                row[0] = Field(i, 0, 'H')
+        for i, row in enumerate(self.fields):
+            if row[7].symbol == 'p':
+                row[7] = Field(i, 7, 'h')

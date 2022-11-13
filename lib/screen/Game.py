@@ -136,7 +136,6 @@ class Game:
                 self.bot_move()
 
     def bot_move(self):
-        print(self.bot.get_move(self.board))
         pos_fig, move = self.bot.get_move(self.board)
         p_x, p_y = pos_fig
         x, y = move
