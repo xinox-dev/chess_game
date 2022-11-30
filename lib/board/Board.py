@@ -4,34 +4,19 @@ from copy import copy
 
 
 class Board:
-    def __init__(self, color):
-        self.fields = self.load_fields()
+    def __init__(self, color, setup):
+        self.fields = self.load_fields(setup)
         self.pos_board_x = 100
         self.pos_board_y = 100
         self.white_on_top = False if color == Constants.FIG_WHITE else True
         self.selected_figure = None
         self.check_color = None
-        self.available_moves_on_check = []
+        self.legal_moves_on_check = []
         self.evaluation = 0
         self.kings_already_move = {
             Constants.FIG_WHITE: False,
             Constants.FIG_BLACK: False,
         }
-
-    @staticmethod
-    def load_fields():
-        fields = [[] for _ in range(8)]
-
-        for i, (row_f, row_s) in enumerate(zip(fields, Constants.BOARD_SETUP.split('/'))):
-
-            for j, symbol in enumerate([*row_s]):
-                if symbol != '0':
-                    field = Field(i, j, symbol)
-                else:
-                    field = Field(i, j)
-
-                fields[i].append(field)
-        return fields
 
     def save_fields(self):
         save = ''
@@ -69,7 +54,7 @@ class Board:
                 self.selected_figure = field
             else:
                 select_figure = None
-                for available_move in self.available_moves_on_check:
+                for available_move in self.legal_moves_on_check:
                     if available_move[0] == field:
                         select_figure = field
                         break
@@ -94,7 +79,7 @@ class Board:
 
             elif self.check_color:
                 moves = []
-                for available_move in self.available_moves_on_check:
+                for available_move in self.legal_moves_on_check:
                     if available_move[0] == self.selected_figure:
                         moves.append(available_move[1])
                 if (pos_x, pos_y) in moves:
@@ -143,15 +128,15 @@ class Board:
             # check if king move of start position
             self.set_king_already_move()
 
-    def set_available_moves_on_check(self):
-        available_moves_on_check = []
+    def set_legal_moves_on_check(self):
+        legal_moves_on_check = []
         for row in self.fields:
             for field in row:
-                if not field.empty and field.figure.color == self.check_color:
+                if field.is_color(self.check_color):
                     if field.symbol == 'k' or field.symbol == 'K':
                         moves = field.possible_moves(self.fields)
                         for m in moves:
-                            available_moves_on_check.append((field, m))
+                            legal_moves_on_check.append((field, m))
                     else:
                         moves = field.possible_moves(self.fields)
                         for move in moves:
@@ -160,9 +145,9 @@ class Board:
                             king = self.find_king(subboard, self.check_color)
 
                             if not king.check_check(subboard):
-                                available_moves_on_check.append((field, move))
+                                legal_moves_on_check.append((field, move))
 
-        self.available_moves_on_check = available_moves_on_check
+        self.legal_moves_on_check = legal_moves_on_check
 
     # give new board with simulation
     def make_move_simulation(self, field, move):
@@ -285,3 +270,18 @@ class Board:
                 return True
 
         return False
+
+    @staticmethod
+    def load_fields(setup):
+        fields = [[] for _ in range(8)]
+
+        for i, (row_f, row_s) in enumerate(zip(fields, setup.split('/'))):
+
+            for j, symbol in enumerate([*row_s]):
+                if symbol != '0':
+                    field = Field(i, j, symbol)
+                else:
+                    field = Field(i, j)
+
+                fields[i].append(field)
+        return fields

@@ -75,3 +75,9 @@ class Field:
 
     def set_first_move(self):
         self.figure.first_move = True
+
+    def is_color(self, color):
+        if not self.empty and self.figure.color == color:
+            return True
+        else:
+            return False

@@ -8,14 +8,13 @@ from lib.screen.Game import Game
 
 
 class Menu:
-    def __init__(self, fun_create_game, fun_set_bot):
+    def __init__(self, fun_create_game):
         self.is_on = True
         self.background = (0, 0, 0)
         self.pos_fields_x, self.pos_fields_y = 930, 550
         self.press_cur_x, self.press_cur_y = -1, -1
         self.subwindow: SubWindow = None
         self.create_game = fun_create_game
-        self.set_bot = fun_set_bot
         self.fields = [
             {
                 'name': 'New Game',
@@ -61,7 +60,7 @@ class Menu:
 
     def newgame(self):
         self.is_on = True
-        self.choose_mode()
+        self.choose_color()
 
     def about(self):
         # TODO
@@ -96,13 +95,6 @@ class Menu:
         buttons = [btn_white, btn_black, btn_random]
 
         subwin = SubWindow(close_functon=self.close_subwindow, title='Take color', buttons=buttons)
-        self.subwindow = subwin
-
-    def choose_mode(self):
-        btn_p_vs_p = Button(-1, -1, self.set_bot, img=Images.P_VS_P, name='pvp', text=False)
-        btn_p_vs_ai = Button(-1, -1, self.set_bot, img=Images.P_VS_AI, name='pvb', text=False)
-        buttons = [btn_p_vs_p, btn_p_vs_ai]
-        subwin = SubWindow(close_functon=self.close_subwindow, title='Take mode', buttons=buttons)
         self.subwindow = subwin
 
     def endgame(self, title, desc):
